@@ -1,17 +1,35 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import { Button, Flex } from '@chakra-ui/react';
+
+import { useAuth } from '@/lib/auth';
+import { FastFeedbackIcon } from 'public/icons';
 
 export default function Home() {
+  const auth = useAuth();
+
   return (
-    <div className={styles.container}>
+    <Flex
+      as="main"
+      direction="column"
+      align="center"
+      justify="center"
+      h="100vh"
+    >
       <Head>
         <title>Fast Feedback</title>
-        <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Fast Feedback</h1>
-      </main>
-    </div>
+      <FastFeedbackIcon color="black.500" boxSize="64px" />
+
+      {auth.user ? (
+        <Button as="a" href="/dashboard">
+          View Dashboard
+        </Button>
+      ) : (
+        <Button mt={4} size="sm" onClick={() => auth.signInWithGithub()}>
+          Sign in
+        </Button>
+      )}
+    </Flex>
   );
 }
